@@ -14,7 +14,7 @@ const AccountCard = ({account}:{account:Account}) => {
         <View style={styles.infoRow}>
         <Text  style={styles.infoHeader}>Balance:</Text>
         <Text style={AppTextstyles.bodyLargeBold} >
-            {account.balance.toLocaleString(
+            {account.balance?.toLocaleString(
                 'en-NG', {
                     style: 'currency',
                     currency: 'NGN',

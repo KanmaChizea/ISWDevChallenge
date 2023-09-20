@@ -101,15 +101,16 @@ const addAccount :(props:AddAccountProps) => Promise<RequestResult> =async (prop
                 'Content-Type': 'application/json',
               },
         },);
-        
+        if(result.status == 201){   
         const data = await result.json();
-        
         return {
             isSuccess: true,
             data: data,
         }
-        }catch(e){
-            
+        } else{
+            throw new Error()
+        }     
+        }catch(e){  
             return {
                 isSuccess: false,
                 errorMessage:props.newUser ? 'Could not create new user' :'Could not add account'

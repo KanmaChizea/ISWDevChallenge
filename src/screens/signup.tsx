@@ -62,7 +62,7 @@ export const SignupScreen = ()=>{
           );
           //get account
           dispatch(setAccounts({accounts:[{accountNo: accountNo, balance:acctbalance}]}))
-          dispatch(login(user));
+          dispatch(login(user.data));
         }
         if(user.errorMessage !== undefined){
             //show snackbar

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { InputField } from '../shared/input_field'
 import { EmptyStringValidation, NumberValidation, ExactLengthValidation } from '../../services/validation'
 import { API } from '../../repository/api'
-import { selectUser } from '../../redux/user'
+import { selectUserId } from '../../redux/user'
 import { getRandomInteger } from '../../services/utils'
 import { addAccount } from '../../redux/accounts'
 import Snackbar from 'react-native-snackbar'
@@ -27,19 +27,21 @@ export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
     const [accountNo, setAccountNo] = useState('');
     const [isLoading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string|undefined>()
+    const [isSuccess, setIsSuccess]= useState(true)
     const dispatch = useAppDispatch();
-    const user = useAppSelector(selectUser)
+    const userid = useAppSelector(selectUserId)
     
     const addAccountFunction = async ()=>{
         const errorMessage = EmptyStringValidation(accountNo) ?? NumberValidation({value: accountNo}) ?? ExactLengthValidation({value:accountNo, length:10});
         setErrorMessage(errorMessage)
         if(errorMessage === undefined){
             setLoading(true);
+            const balance = getRandomInteger()
             const result = await API.addAccount({
-                id: user!.id,
+                id: userid!,
                 accountno: accountNo,
-                balance: getRandomInteger(),
-                newUser:false
+                balance: balance,
+                newUser:false,
             });
             if(result.isSuccess){
             dispatch(addAccount({
@@ -48,18 +50,18 @@ export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
                     balance: result.data.balance
                 }
             }));
-            }else{
-                Snackbar.show({
-                    text:result.errorMessage!
-                });
-            }
             setLoading(false);
             closeModal();
+        }else{
+                setLoading(false);
+              setIsSuccess(false)
+            }
+          
         }
     }
   return (
     <View style={styles.centeredView}>
-    <View style={styles.container}>
+    { isSuccess ? <View style={styles.container}>
       <Text style={styles.headerText}>Add New Account</Text>
       <View style={styles.image}>
       <AddAccountIcon/>
@@ -77,10 +79,21 @@ export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
         size={100}
         onPressed={()=>addAccountFunction()}/>
         </View>
-    </View>
+    </View> :
+    <View style={{...styles.container,   alignItems:'center'}}>
+        <TouchableOpacity style={styles.closeError} onPress={()=>closeModal()}>
+            <Text style={{color:AppColors.error}}>Close</Text>
+        </TouchableOpacity>
+        <Text style={styles.errorText}>Error</Text>
+        <Text style={styles.errorMessageText}>Something went wrong</Text>
+        <ElevatedButton label='Try again' onPressed={()=>{
+            setAccountNo('')
+            setIsSuccess(true)}
+            } size={100}/>
+    </View>}
     </View>
   )
-}
+  }
 
 const styles = StyleSheet.create({
     addButton:{
@@ -116,6 +129,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+      
     },
     headerText:{
        paddingBottom: 8,
@@ -129,5 +143,17 @@ const styles = StyleSheet.create({
     image:{
         alignSelf:'center',
         paddingBottom: 24,
+    },
+    closeError:{
+        alignSelf:'flex-end',
+        paddingBottom: 36,
+    },
+    errorText:{
+        ...AppTextstyles.h4,
+        paddingBottom: 8,
+    },
+    errorMessageText:{
+        ...AppTextstyles.bodyLarge,
+        paddingBottom: 50
     }
 })

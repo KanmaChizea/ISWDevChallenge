@@ -24,11 +24,11 @@ export const userSlice = createSlice({
     initialState,
     reducers:{
         login:(state,action)=>{
-            state.loggedIn = true
             state.user = {
                 id: action.payload.id,
                name: action.payload.fullname
             }
+            state.loggedIn = true
         },
         logout:(state)=>{
             state.loggedIn = false
@@ -38,7 +38,8 @@ export const userSlice = createSlice({
 
 export const {login, logout} = userSlice.actions;
 
-export const selectUser =(state: RootState)=> state.user.user
+export const selectUserId =(state: RootState)=> state.user.user?.id
+export const selectUsername =(state: RootState)=> state.user.user?.name
 export const selectUserLoading =(state: RootState)=> state.user.loading
 export const selectUserError =(state: RootState)=> state.user.error
 export const selectUserLoggedIn = (state: RootState)=> state.user.loggedIn
