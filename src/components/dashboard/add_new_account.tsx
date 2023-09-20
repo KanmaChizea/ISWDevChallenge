@@ -7,7 +7,7 @@ import { EmptyStringValidation, NumberValidation, ExactLengthValidation } from '
 import { API } from '../../repository/api'
 import { selectUserId } from '../../redux/user'
 import { getRandomInteger } from '../../services/utils'
-import { addAccount } from '../../redux/accounts'
+import { addAccount, selectAccounts } from '../../redux/accounts'
 import Snackbar from 'react-native-snackbar'
 import AppTextstyles from '../../styles/textstyles'
 import ElevatedButton from '../shared/elevated_button'
@@ -26,15 +26,19 @@ export const AddNewAccountButton = ({onPress}:{onPress:()=>void}) => {
 export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
     const [accountNo, setAccountNo] = useState('');
     const [isLoading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string|undefined>()
-    const [isSuccess, setIsSuccess]= useState(true)
+    const [validateErrorMessage, setValidateErrorMessage] = useState<string|undefined>()
+    const [errorMessage, setErrorMessage]= useState('')
     const dispatch = useAppDispatch();
     const userid = useAppSelector(selectUserId)
+    const accounts = useAppSelector(selectAccounts)
     
     const addAccountFunction = async ()=>{
         const errorMessage = EmptyStringValidation(accountNo) ?? NumberValidation({value: accountNo}) ?? ExactLengthValidation({value:accountNo, length:10});
-        setErrorMessage(errorMessage)
+        setValidateErrorMessage(errorMessage)
         if(errorMessage === undefined){
+            if(accounts.some(account => account.accountNo === accountNo)){
+                setErrorMessage('Account already exists!')
+            } else {
             setLoading(true);
             const balance = getRandomInteger()
             const result = await API.addAccount({
@@ -54,14 +58,14 @@ export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
             closeModal();
         }else{
                 setLoading(false);
-              setIsSuccess(false)
+              setErrorMessage('Something went wrong')
             }
-          
+        }
         }
     }
   return (
     <View style={styles.centeredView}>
-    { isSuccess ? <View style={styles.container}>
+    { errorMessage === '' ? <View style={styles.container}>
       <Text style={styles.headerText}>Add New Account</Text>
       <View style={styles.image}>
       <AddAccountIcon/>
@@ -71,7 +75,7 @@ export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
             onChangeText={val=>setAccountNo(val)}
             label="Account number"
             keyboardType="numeric"
-            errorMessage={errorMessage}/>
+            errorMessage={validateErrorMessage}/>
         <View style={styles.buttonContainer}>
         <ElevatedButton 
         child={isLoading ? <ActivityIndicator color='white'/> : undefined} 
@@ -85,11 +89,15 @@ export const AddNewAccount = ({closeModal}:{closeModal:()=>void}) => {
             <Text style={{color:AppColors.error}}>Close</Text>
         </TouchableOpacity>
         <Text style={styles.errorText}>Error</Text>
-        <Text style={styles.errorMessageText}>Something went wrong</Text>
-        <ElevatedButton label='Try again' onPressed={()=>{
+        <Text style={styles.errorMessageText}>{errorMessage}</Text>
+        <ElevatedButton label='Try again'
+        onPressed={
+            ()=>{
             setAccountNo('')
-            setIsSuccess(true)}
-            } size={100}/>
+            setErrorMessage('')
+        }
+        } 
+        size={100}/>
     </View>}
     </View>
   )
