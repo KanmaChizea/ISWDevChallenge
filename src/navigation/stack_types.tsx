@@ -1,5 +1,4 @@
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Login: undefined;
@@ -13,7 +12,7 @@ export type LoginScreenNavigationProp = {
 
 export type BankAppScreenNavigationProp = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'BankApp'>;
-}
+};
 export type SignupScreenNavigationProp = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Signup'>;
 };
