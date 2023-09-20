@@ -3,17 +3,17 @@ import React from 'react'
 import AppTextstyles from '../styles/textstyles'
 import ElevatedButton from '../components/shared/elevated_button'
 import { useAppSelector } from '../redux/hooks'
-import { selectUser } from '../redux/user'
+import { selectUsername } from '../redux/user'
 
 const HelpScreen = () => {
-  const user = useAppSelector(selectUser);
+  const user = useAppSelector(selectUsername);
   return (
     <View style={styles.container}>
       <Text style={styles.headingText}>Help</Text>
       <View style={styles.bodyContainer}>
       <View style={styles.greetingContainer}>
         <Image source={require('../../assets/images/assistant.png')} style={styles.image}/>
-        <Text style={styles.greetingText}>{'Hello, ' + user?.name}</Text>
+        <Text style={styles.greetingText}>{'Hello, ' + user}</Text>
         <Text style={styles.greetingSubtext}>How can we help you today?</Text>
         <ElevatedButton label="Let's chat" onPressed={()=>{}} size={120}/>
       </View>
