@@ -1,13 +1,23 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {DashboardAction} from '../../constants/actions';
 import AppTextstyles from '../../styles/textstyles';
+import {useNavigation} from '@react-navigation/native';
+import {BankAppScreenNavigationProp} from '../../navigation/stack_types';
 
-export const DashboardActionCard = ({action}: {action: DashboardAction}) => {
+export const DashboardActionCard = ({
+  action,
+  onPress,
+}: {
+  action: DashboardAction;
+  onPress: () => void;
+}) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.card}>{action.icon}</View>
-      <Text style={styles.text}>{action.name}</Text>
-    </View>
+    <TouchableOpacity activeOpacity={0.9} onPress={onPress}>
+      <View style={styles.container}>
+        <View style={styles.card}>{action.icon}</View>
+        <Text style={styles.text}>{action.name}</Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 

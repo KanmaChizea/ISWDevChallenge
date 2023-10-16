@@ -2,8 +2,17 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Login: undefined;
-  BankApp: undefined;
+  Home: undefined;
   Signup: undefined;
+  Transfers: undefined;
+  PayBills: undefined;
+  BuyAirtime: undefined;
+  QRPayment: undefined;
+  Loans: undefined;
+  VirtualCards: undefined;
+  Chat: undefined;
+  ChangePin: undefined;
+  ManageBeneficiaries: undefined;
 };
 
 export type LoginScreenNavigationProp = {
@@ -11,7 +20,7 @@ export type LoginScreenNavigationProp = {
 };
 
 export type BankAppScreenNavigationProp = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'BankApp'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
 };
 export type SignupScreenNavigationProp = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Signup'>;

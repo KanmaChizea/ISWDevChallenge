@@ -6,14 +6,20 @@ import {AppColors} from '../styles';
 import {BiometricIcon, LockIcon, LogoutIcon, ManageIcon} from '../../assets';
 import {useAppDispatch} from '../redux/hooks';
 import {logout} from '../redux/user';
+import {useNavigation} from '@react-navigation/native';
 
 const SettingsScreen = () => {
   const [fingerprintEnabled, setFingerprintEnabled] = useState(true);
   const dispatch = useAppDispatch();
+  const navigator = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.headingText}>Settings</Text>
-      <ListTile leading={<LockIcon />} title="Change Pin" onPress={() => {}} />
+      <ListTile
+        leading={<LockIcon />}
+        title="Change Pin"
+        onPress={() => navigator.navigate('ChangePin' as never)}
+      />
       <ListTile
         leading={<BiometricIcon />}
         title="Enable Fingerprint"
@@ -31,7 +37,7 @@ const SettingsScreen = () => {
       <ListTile
         leading={<ManageIcon />}
         title="Manage Beneficiaries"
-        onPress={() => {}}
+        onPress={() => navigator.navigate('ManageBeneficiaries' as never)}
       />
       <ListTile
         leading={<LogoutIcon stroke={AppColors.primary} />}

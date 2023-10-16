@@ -4,7 +4,7 @@ import {
   DrawerItem,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
-import HelpScreen from '../screens/help';
+import HelpScreen from '../containers/Help';
 import {
   DashboardIcon,
   HelpIcon,

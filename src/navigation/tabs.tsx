@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Dashboard from '../screens/dashboard';
-import SettingsScreen from '../screens/settings';
+import Dashboard from '../containers/Dashboard';
+import SettingsScreen from '../containers/Settings';
 import {AppColors} from '../styles';
 import {Text} from 'react-native';
 import {DashboardIcon, SettingsIcon} from '../../assets';

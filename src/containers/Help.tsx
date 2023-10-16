@@ -4,9 +4,11 @@ import AppTextstyles from '../styles/textstyles';
 import ElevatedButton from '../components/shared/elevated_button';
 import {useAppSelector} from '../redux/hooks';
 import {selectUsername} from '../redux/user';
+import {useNavigation} from '@react-navigation/native';
 
 const HelpScreen = () => {
   const user = useAppSelector(selectUsername);
+  const navigator = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.headingText}>Help</Text>
@@ -18,7 +20,11 @@ const HelpScreen = () => {
           />
           <Text style={styles.greetingText}>{'Hello, ' + user}</Text>
           <Text style={styles.greetingSubtext}>How can we help you today?</Text>
-          <ElevatedButton label="Let's chat" onPressed={() => {}} size={120} />
+          <ElevatedButton
+            label="Let's chat"
+            onPressed={() => navigator.navigate('Chat' as never)}
+            size={120}
+          />
         </View>
         <View style={{alignItems: 'center'}}>
           <Text style={AppTextstyles.h5}>Contact Us</Text>

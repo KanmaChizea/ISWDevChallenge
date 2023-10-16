@@ -18,10 +18,12 @@ import {
   AddNewAccount,
   AddNewAccountButton,
 } from '../components/dashboard/add_new_account';
+import {useNavigation} from '@react-navigation/native';
 
 const Dashboard = () => {
   const myAccounts = useAppSelector(selectAccounts);
   const [modalVisible, setModalVisible] = useState(false);
+  const navigator = useNavigation();
   return (
     <View style={styles.container}>
       <Modal
@@ -53,7 +55,12 @@ const Dashboard = () => {
       <FlatList
         keyExtractor={(item, index) => item.id}
         data={dashboardActions}
-        renderItem={({item}) => <DashboardActionCard action={item} />}
+        renderItem={({item}) => (
+          <DashboardActionCard
+            action={item}
+            onPress={() => navigator.navigate(item.route as never)}
+          />
+        )}
         numColumns={3}
         columnWrapperStyle={styles.columnWrapper}
       />
